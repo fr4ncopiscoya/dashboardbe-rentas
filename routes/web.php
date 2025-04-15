@@ -7,7 +7,7 @@ use App\Http\Controllers\MailingController;
 use App\Http\Controllers\SubscriptionController;
 
 Route::get('/', function () {
-    return 'API REST - ERP V1';
+    return 'API REST - ERP  ';
 });
 
 Route::prefix('dashboard')->group(function () {
@@ -22,6 +22,8 @@ Route::prefix('dashboard')->group(function () {
     Route::post('sel-tupa-area-calendar', [ReporteController::class, 'reporteTupaAreaCalendar']);
     Route::post('sel-multa-calendar', [ReporteController::class, 'reporteMultaCalendar']);
     Route::post('sel-dia-tupa', [ReporteController::class, 'selTupaDia']);
+
+    Route::post('sel-anio-multa', [ReporteController::class, 'selMultaAnio']);
 });
 
 Route::prefix('v1')->group(function () {

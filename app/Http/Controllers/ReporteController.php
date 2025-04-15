@@ -11,15 +11,18 @@ class ReporteController extends Controller
 
     private static $conexion = 'sqlsrv';
     private static $conexionpsql = 'pgsql';
-
+    
     public function selAnio(Request $request)
     {
         $p_anio = $request['p_anio'];
         $p_tipo = $request['p_tipo'];
-
-        $results = DB::connection(self::$conexion)->select('EXEC siget.usp_ingresoany_sel ?', [
-            $p_anio,
+        
+        // $results = DB::connection(self::$conexion)->select('EXEC siget.usp_ingresoany_sel ?', [
+        //     $p_anio,
             
+        // ]);
+        $results = DB::connection('pgsql')->select('SELECT * FROM postgres.uf_ingresosany_sel(?)', [
+            $p_anio
         ]);
 
         return response()->json($results);
@@ -43,11 +46,25 @@ class ReporteController extends Controller
         $p_anio = $request['p_anio'];
         $p_mes = $request['p_mes'];
 
-        $results = DB::connection(self::$conexion)->select('EXEC siget.usp_ingresodia_sel ?, ?', [
+        // $results = DB::connection(self::$conexion)->select('EXEC siget.usp_ingresodia_sel ?, ?', [
+        //     $p_anio,
+        //     $p_mes
+        // ]);
+        
+        $results = DB::connection('pgsql')->select('SELECT * FROM postgres.uf_ingresosany_sel_dia(?, ?)', [
             $p_anio,
             $p_mes
         ]);
+        return response()->json($results);
+    }
 
+    public function selMultaAnio(Request $request)
+    {
+        $p_anio = $request['p_anypro'];
+        
+        $results = DB::connection('pgsql')->select('SELECT * FROM postgres.uf_ingresosany_sel_multas(?)', [
+            $p_anio,
+        ]);
         return response()->json($results);
     }
 
@@ -57,24 +74,26 @@ class ReporteController extends Controller
         $p_dia_fin = $request['p_dia_fin'];
         $p_tipo = $request['p_tipo'];
         // $results = DB::connection(self::$conexion)->select('EXEC siget.usp_ingresocondsh_sel ?,?', [
-        $results = DB::connection(self::$conexion)->select('EXEC siget.usp_ingresocondsh_sel ?,?', [
+        $results = DB::connection('pgsql')->select('SELECT * FROM postgres.uf_ingresosdia_sel(?, ?)', [
             $p_dia,
             $p_dia_fin
-            
         ]);
-
         return response()->json($results);
     }
-
+    
     public function selContribuyente(Request $request)
     {
         $p_dia = $request['p_dia'];
         $p_dia_fin = $request['p_dia_fin'];
-
-        $results = DB::connection(self::$conexion)->select('EXEC siget.usp_ingresocontri_sel ?,?', [
+        
+        $results = DB::connection('pgsql')->select('SELECT * FROM postgres.uf_topcontribuyentes_sel(?, ?)', [
             $p_dia,
             $p_dia_fin
         ]);
+        // $results = DB::connection(self::$conexion)->select('EXEC siget.usp_ingresocontri_sel ?,?', [
+        //     $p_dia,
+        //     $p_dia_fin
+        // ]);
 
         return response()->json($results);
     }
@@ -83,21 +102,28 @@ class ReporteController extends Controller
     {
         $p_anio = $request['p_anio'];
 
-        $results = DB::connection(self::$conexion)->select('EXEC siget.usp_ingresorubany_sel ?', [
+        // $results = DB::connection(self::$conexion)->select('EXEC siget.usp_ingresorubany_sel ?', [
+        //     $p_anio,
+        // ]);
+        $results = DB::connection('pgsql')->select('SELECT * FROM postgres.uf_ingresosany_rubro_sel(?)', [
             $p_anio,
         ]);
-
+        
         return response()->json($results);
     }
-
+    
     public function selConceptoMontos(Request $request)
     {
         $p_dia = $request['p_dia'];
         $p_dia_fin = $request['p_dia_fin'];
-
-        $results = DB::connection(self::$conexion)->select('EXEC siget.usp_ingresorubran_sel ?,?', [
+        
+        // $results = DB::connection(self::$conexion)->select('EXEC siget.usp_ingresorubran_sel ?,?', [
+        //     $p_dia,
+        //     $p_dia_fin,
+        // ]);
+        $results = DB::connection('pgsql')->select('SELECT * FROM postgres.uf_ingresosany_rubro_sel_dia(?,?)', [
             $p_dia,
-            $p_dia_fin,
+            $p_dia_fin
         ]);
 
         return response()->json($results);
@@ -158,11 +184,16 @@ class ReporteController extends Controller
         $p_anypro = ($request['p_anypro']) ? $request['p_anypro'] : 0;
         $p_mespro = ($request['p_mespro']) ? $request['p_mespro'] : 0;
 
-        $results = DB::connection(self::$conexion)->select('exec siget.usp_ingresodiama_sel ?,?', [
+        $results = DB::connection('pgsql')->select('SELECT * FROM postgres.uf_ingresosany_sel_dia_multas(?,?)', [
             $p_anypro,
-            $p_mespro,
-
+            $p_mespro
         ]);
+
+        // $results = DB::connection(self::$conexion)->select('exec siget.usp_ingresodiama_sel ?,?', [
+        //     $p_anypro,
+        //     $p_mespro,
+
+        // ]);
 
         return response()->json($results);
     }
