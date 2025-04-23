@@ -24,6 +24,7 @@ Route::prefix('dashboard')->group(function () {
     Route::post('sel-dia-tupa', [ReporteController::class, 'selTupaDia']);
 
     Route::post('sel-anio-multa', [ReporteController::class, 'selMultaAnio']);
+    Route::post('acceso', [ReporteController::class, 'loginUser']);
 });
 
 Route::prefix('v1')->group(function () {

@@ -12,6 +12,18 @@ class ReporteController extends Controller
     private static $conexion = 'sqlsrv';
     private static $conexionpsql = 'pgsql';
     
+    public function loginUser(Request $request)
+    {
+        $p_loging = $request['p_loging'];
+        $p_passwd = $request['p_passwd'];
+        
+        $results = DB::connection('pgsql')->select('SELECT * FROM postgres.logue_usuario_dashboard(?,?)', [
+            $p_loging,
+            $p_passwd
+        ]);
+
+        return response()->json($results);
+    }
     public function selAnio(Request $request)
     {
         $p_anio = $request['p_anio'];
