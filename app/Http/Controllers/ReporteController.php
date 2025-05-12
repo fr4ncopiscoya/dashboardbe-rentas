@@ -210,6 +210,19 @@ class ReporteController extends Controller
         return response()->json($results);
     }
 
+    public function reporteMultaEspecifica(Request $request)
+    {
+        $p_dia = ($request['p_dia']) ? $request['p_dia'] : 0;
+
+        $results = DB::connection('pgsql')->select('SELECT * FROM postgres.uf_ingresosany_sel_dia_multas_detalle(?)', [
+            $p_dia
+        ]);
+
+        return response()->json($results);
+    }
+
+
+
     public function selTupaDia(Request $request)
     {
         $p_areaid = ($request['p_areaid']) ? $request['p_areaid'] : 0;
